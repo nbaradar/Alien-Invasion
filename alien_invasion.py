@@ -7,6 +7,9 @@ import sys
 import pygame
 import random
 
+#This imports the Settings class from the settings module (which is just the settings.py file)
+from settingsModule import Settings
+
 class AlienInvasion:
     """Overrall class to manage game assets and behavior"""
 
@@ -15,9 +18,10 @@ class AlienInvasion:
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init()
+        self.settings = Settings()
 
-        self.pygameSurface = pygame.display.set_mode((1200, 800))
-
+        self.pygameSurface = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.bg_color = (self.settings.bg_color)
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -26,8 +30,9 @@ class AlienInvasion:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    self.pygameSurface.fill((random.randrange(0,255), random.randrange(0,255), random.randrange(0,255)))
+                """if event.type == pygame.KEYDOWN:
+                    self.pygameSurface.fill((random.randrange(0,255), random.randrange(0,255), random.randrange(0,255)))"""
+            self.pygameSurface.fill(self.bg_color)
 
             #Make the most recently drawn screen visible
             pygame.display.flip()
