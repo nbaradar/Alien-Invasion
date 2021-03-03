@@ -11,7 +11,7 @@ class Ship:
         self.screen_rect = alienInvasion_engine.pygameSurface.get_rect()
 
         # Load the ship image and get its rect.
-        self.image = pygame.image.load('graphics\PikPng.com_space-invaders-png_2205494.png')
+        self.image = pygame.image.load('graphics\ship.bmp')
         self.rect = self.image.get_rect()
 
         #Start each new ship at the bottom center of the screen
