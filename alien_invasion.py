@@ -10,6 +10,8 @@ import random
 class AlienInvasion:
     """Overrall class to manage game assets and behavior"""
 
+    #This is like the constructor for python, self refers to an instance of this class. 
+    #It is automatically passed into the constructor in other programming languages.
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init()
