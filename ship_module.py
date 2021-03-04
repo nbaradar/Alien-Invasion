@@ -2,8 +2,8 @@
 
 import pygame
 
-class Ship: 
-    """A class to manage the ship."""    
+class Ship:
+    """A class to manage the ship."""
     #The contructor takes the game engine so it has access to all its resources
     def __init__(self, alienInvasion_engine):
         """Initialize the ship and set its starting position."""
@@ -16,7 +16,7 @@ class Ship:
 
         #Start each new ship at the bottom center of the screen
         self.rect.midbottom = self.screen_rect.midbottom
-    
+
     def blitme(self):
         """Draw the ship at its current position."""
         self.screen.blit(self.image, self.rect)
