@@ -21,6 +21,7 @@ class AlienInvasion:
         pygame.init()
         pygame.display.set_caption("Alien Invasion")
 
+        #Initialize settings option as a 
         self.settings = Settings()
         self.pygame_surface = pygame.display.set_mode((self.settings.screen_width,
                                                        self.settings.screen_height))
@@ -47,10 +48,11 @@ class AlienInvasion:
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
-        self.pygame_surface.fill(self.bg_color)
+        #First draw the updates you want onto the screen
+        #self.pygame_surface.fill(self.bg_color)
         self.ship.blitme()
 
-        #Make the most recently drawn screen visible
+        #Then make the most recently drawn screen visible
         pygame.display.flip()
 
 if __name__ == '__main__':

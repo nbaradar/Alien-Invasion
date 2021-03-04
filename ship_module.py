@@ -5,10 +5,10 @@ import pygame
 class Ship:
     """A class to manage the ship."""
     #The contructor takes the game engine so it has access to all its resources
-    def __init__(self, alienInvasion_engine):
+    def __init__(self, alien_invasion_engine):
         """Initialize the ship and set its starting position."""
-        self.screen = alienInvasion_engine.pygameSurface
-        self.screen_rect = alienInvasion_engine.pygameSurface.get_rect()
+        self.screen = alien_invasion_engine.pygame_surface
+        self.screen_rect = alien_invasion_engine.pygame_surface.get_rect()
 
         # Load the ship image and get its rect.
         self.image = pygame.image.load('graphics\ship.bmp')
