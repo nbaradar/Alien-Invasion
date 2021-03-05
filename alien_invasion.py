@@ -41,10 +41,21 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                self.pygame_surface.fill((random.randrange(0,255),
+            elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.K_RIGHT || event.type == pygame.K_k:
+                    self.ship.rect.x += 1
+                if event.type == pygame.K_LEFT:
+                    self.ship.rect.x -= 1
+                if event.type == pygame.K_UP:
+                    self.ship.rect.y -= 1
+                if event.type == pygame.K_DOWN:
+                    self.ship.rect.y += 1
+            #elif event.type == pygame.KEYUP:
+                #self.ship.rect.y -= 1
+            
+                """self.pygame_surface.fill((random.randrange(0,255),
                                           random.randrange(0,255),
-                                          random.randrange(0,255)))
+                                          random.randrange(0,255)))"""
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
