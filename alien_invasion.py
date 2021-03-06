@@ -19,10 +19,17 @@ class AlienInvasion:
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init()
+        
+        #Initialize settings option as a variable
+        self.settings = Settings()
+
+        #Runs the game in fullscreen
+        self.screen= pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+
         pygame.display.set_caption("Alien Invasion")
 
-        #Initialize settings option as a 
-        self.settings = Settings()
         self.pygame_surface = pygame.display.set_mode((self.settings.screen_width,
                                                        self.settings.screen_height))
         self.bg_color = (self.settings.bg_color)
@@ -33,6 +40,8 @@ class AlienInvasion:
         while True:
             #Watch for keyboard and mouse events.
             self._check_events()
+            #Update the ship object
+            self.ship.update()
             #Draw the screen
             self._update_screen()
 
@@ -42,25 +51,33 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.type == pygame.K_RIGHT || event.type == pygame.K_k:
-                    self.ship.rect.x += 1
-                if event.type == pygame.K_LEFT:
-                    self.ship.rect.x -= 1
-                if event.type == pygame.K_UP:
-                    self.ship.rect.y -= 1
-                if event.type == pygame.K_DOWN:
-                    self.ship.rect.y += 1
-            #elif event.type == pygame.KEYUP:
-                #self.ship.rect.y -= 1
-            
-                """self.pygame_surface.fill((random.randrange(0,255),
-                                          random.randrange(0,255),
-                                          random.randrange(0,255)))"""
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+        
+
+    def _check_keydown_events(self, event):
+        """Respond to KEYDOWN events"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+
+        #If the user presses q, quit
+        elif event.key == pygame.K_q:
+            sys.exit()
+
+    def _check_keyup_events(self, event):
+        """Respond to KEYUP events"""
+        if event.key == pygame.K_RIGHT or event.key== pygame.K_LEFT:
+            self.ship.moving_right = False
+            self.ship.moving_left = False
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
         #First draw the updates you want onto the screen
         #self.pygame_surface.fill(self.bg_color)
+        self.pygame_surface.fill(self.bg_color)
         self.ship.blitme()
 
         #Then make the most recently drawn screen visible
