@@ -44,16 +44,7 @@ class AlienInvasion:
             #Update the ship object
             self.ship.update()
             #Update the group of bullet objects
-            #(Calling update on the Group parent class
-            #invokes update in the children aka. the bullets)
-            self.bullets.update()
-
-            #Get rid of bullets that have reached top of screen
-            for bullet in self.bullets:
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-            print(len(self.bullets))
-
+            self._update_bullets()
             #Draw the screen
             self._update_screen()
 
@@ -89,8 +80,20 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the group of bullets"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """Update position of the bullets and get rid of old bullets"""
+        #Update bullet positions.
+        #(Calling update Group parent class invokes update in the child aka. bullets)
+        self.bullets.update()
+
+        #Get rid of bullets that have reached top of screen
+        for bullet in self.bullets:
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
