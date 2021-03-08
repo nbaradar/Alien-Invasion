@@ -11,6 +11,7 @@ import pygame
 #This imports the Settings class from the settings module (which is just the settings.py file)
 from settings_module import Settings
 from gamestats_module import GameStats
+from button_module import Button
 from ship_module import Ship
 from bullet_module import Bullet
 from alien_module import Alien
@@ -45,6 +46,9 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
+
+        #Make the play button
+        self.play_button = Button(self, "Play")
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -219,6 +223,11 @@ class AlienInvasion:
             bullet.draw_bullet()
 
         self.aliens.draw(self.screen)
+
+        #Draw the play button if the game is inactive.
+        if not self.stats.game_active:
+            self.play_button.draw_button()
+
         #Then make the most recently drawn screen visible
         pygame.display.flip()
 
