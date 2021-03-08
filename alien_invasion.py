@@ -4,10 +4,13 @@ This module does stuff.
 """
 
 import sys
+from time import sleep
+
 import pygame
 
 #This imports the Settings class from the settings module (which is just the settings.py file)
 from settings_module import Settings
+from gamestats_module import GameStats
 from ship_module import Ship
 from bullet_module import Bullet
 from alien_module import Alien
@@ -23,6 +26,9 @@ class AlienInvasion:
 
         #Initialize settings option as a variable
         self.settings = Settings()
+
+        #Create instance to store game statistics
+        self.stats = GameStats(self)
 
         #Runs the game in fullscreen
         self.screen= pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -101,16 +107,45 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collisions"""
         #Check for any bullets that have hit aliens.
         #   If so, get rid of the bullet and the alien.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
 
+        if not self.aliens:
+            #Destroy existing bullets and create new fleet
+            self.bullets.empty()
+            self._create_fleet()
+
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+        #Decrement ships_left.
+        self.stats.ships_left -= 1
+
+        #Get rid of any remaining aliens and bullets.
+        self.aliens.empty()
+        self.bullets.empty()
+
+        #Create a new fleet and center the ship.
+        self._create_fleet()
+        self.ship.center_ship()
+
+        #Pause
+        sleep(0.5)
+
     def _update_aliens(self):
-        """Check if the fleet is at an edge, then 
+        """Check if the fleet is at an edge, then
         update the positions of all aliens in the fleet"""
         self._check_fleet_edges()
         self.aliens.update()
+
+        #Look for alien-ship collisions.
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
 
     def _create_fleet(self):
         """Create the fleet of aliens"""
