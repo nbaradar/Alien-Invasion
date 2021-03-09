@@ -11,6 +11,7 @@ import pygame
 #This imports the Settings class from the settings module (which is just the settings.py file)
 from settings_module import Settings
 from gamestats_module import GameStats
+from scoreboard_module import Scoreboard
 from button_module import Button
 from ship_module import Ship
 from bullet_module import Bullet
@@ -28,13 +29,16 @@ class AlienInvasion:
         #Initialize settings option as a variable
         self.settings = Settings()
 
-        #Create instance to store game statistics
-        self.stats = GameStats(self)
-
         #Runs the game in fullscreen
         self.screen= pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
+
+        #Create instance to store game statistics
+        self.stats = GameStats(self)
+
+        #Create an instance of scoreboard to store the current score
+        self.current_score = Scoreboard(self)
 
         pygame.display.set_caption("Alien Invasion")
 
@@ -146,6 +150,10 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
 
+        if (collisions):
+            self.stats.score += self.settings.alien_points
+            self.current_score.prep_score() 
+
         #Checking if any aliens are left
         if not self.aliens:
             #Destroy existing bullets and create new fleet
@@ -249,6 +257,9 @@ class AlienInvasion:
             bullet.draw_bullet()
 
         self.aliens.draw(self.screen)
+
+        #Draw current score
+        self.current_score.show_score()
 
         #Draw the play button if the game is inactive.
         if not self.stats.game_active:
