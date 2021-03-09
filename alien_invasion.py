@@ -94,6 +94,8 @@ class AlienInvasion:
                         self.bullets.empty()
                         self._create_fleet()
                         self.ship.center_ship()
+                        #Calling this after resetting gamestats to render scoreboard with new stats
+                        self.current_score.prep_score()
                         #Reset the games dynamic settings that were changed during previous gameplay
                         self.settings.initialize_dynamic_settings()
 
@@ -150,9 +152,11 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
 
-        if (collisions):
-            self.stats.score += self.settings.alien_points
-            self.current_score.prep_score() 
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+
+            self.current_score.prep_score()
 
         #Checking if any aliens are left
         if not self.aliens:
