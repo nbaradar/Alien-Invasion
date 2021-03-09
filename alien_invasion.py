@@ -157,6 +157,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
 
             self.current_score.prep_score()
+            self.current_score.check_high_score()
 
         #Checking if any aliens are left
         if not self.aliens:

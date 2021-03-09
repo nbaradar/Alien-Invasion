@@ -8,6 +8,9 @@ class GameStats:
         self.settings = alien_invasion_engine.settings
         self.reset_stats()
 
+        #High score should never be reset
+        self.high_score = 0
+
         #Start alien invasion in an inactive state
         self.game_active = False
 
