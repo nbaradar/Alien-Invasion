@@ -76,7 +76,28 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                #If the game is inactive and you hit the play button reset
+                if self._check_play_button(mouse_pos) and self.stats.game_active is False:
+                    #Hide the mouse cursor
+                    pygame.mouse.set_visible(False)
+                    self.stats.game_active = True
+                        #Reset game of play button is hit
+                    if self._check_play_button(mouse_pos):
+                        self.stats.reset_stats()
+                        self.aliens.empty()
+                        self.bullets.empty()
+                        self._create_fleet()
+                        self.ship.center_ship()
 
+
+    def _check_play_button(self, mouse_pos):
+        """Check if the mouse is within the button"""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            return True
+        else:
+            return False
 
     def _check_keydown_events(self, event):
         """Respond to KEYDOWN events"""
@@ -146,6 +167,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _update_aliens(self):
         """Check if the fleet is at an edge, then
@@ -173,7 +195,7 @@ class AlienInvasion:
         #Determine the number of rows of aliens that fit the screen
         ship_height = self.ship.rect.height
         available_space_y = (self.settings.screen_height - (3* alien_height) - ship_height)
-        number_rows = available_space_y // (2 * alien_height)
+        number_rows = available_space_y // (3 * alien_height)
 
         #Create the full fleet of aliens
         for row_number in range(number_rows):
