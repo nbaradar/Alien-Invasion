@@ -34,6 +34,9 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
 
+        self.pygame_surface = pygame.display.set_mode((self.settings.screen_width,
+                                                       self.settings.screen_height))
+
         #Create instance to store game statistics
         self.stats = GameStats(self)
 
@@ -42,8 +45,6 @@ class AlienInvasion:
 
         pygame.display.set_caption("Alien Invasion")
 
-        self.pygame_surface = pygame.display.set_mode((self.settings.screen_width,
-                                                       self.settings.screen_height))
         self.bg_color = (self.settings.bg_color)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -97,6 +98,7 @@ class AlienInvasion:
                         #Calling this after resetting gamestats to render scoreboard with new stats
                         self.current_score.prep_score()
                         self.current_score.prep_level()
+                        self.current_score.prep_ships()
                         #Reset the games dynamic settings that were changed during previous gameplay
                         self.settings.initialize_dynamic_settings()
 
@@ -166,16 +168,16 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
-            
             #Increase level
             self.stats.level += 1
             self.current_score.prep_level()
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
-        if self.stats.ships_left > 0:
+        if self.stats.ships_left > 1:
             #Decrement ships_left.
             self.stats.ships_left -= 1
+            self.current_score.prep_ships()
 
             #Get rid of any remaining aliens and bullets.
             self.aliens.empty()

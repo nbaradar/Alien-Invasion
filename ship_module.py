@@ -1,12 +1,14 @@
 """Module for player ship"""
 
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
     #The contructor takes the game engine so it has access to all its resources
     def __init__(self, alien_invasion_engine):
         """Initialize the ship and set its starting position."""
+        super().__init__()
         self.screen = alien_invasion_engine.pygame_surface
         self.screen_rect = alien_invasion_engine.pygame_surface.get_rect()
         self.settings = alien_invasion_engine.settings
