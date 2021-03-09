@@ -83,13 +83,15 @@ class AlienInvasion:
                     #Hide the mouse cursor
                     pygame.mouse.set_visible(False)
                     self.stats.game_active = True
-                        #Reset game of play button is hit
+                        #Reset game if play button is hit
                     if self._check_play_button(mouse_pos):
                         self.stats.reset_stats()
                         self.aliens.empty()
                         self.bullets.empty()
                         self._create_fleet()
                         self.ship.center_ship()
+                        #Reset the games dynamic settings that were changed during previous gameplay
+                        self.settings.initialize_dynamic_settings()
 
 
     def _check_play_button(self, mouse_pos):
@@ -144,10 +146,12 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
 
+        #Checking if any aliens are left
         if not self.aliens:
             #Destroy existing bullets and create new fleet
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
