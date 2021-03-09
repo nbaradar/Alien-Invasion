@@ -96,6 +96,7 @@ class AlienInvasion:
                         self.ship.center_ship()
                         #Calling this after resetting gamestats to render scoreboard with new stats
                         self.current_score.prep_score()
+                        self.current_score.prep_level()
                         #Reset the games dynamic settings that were changed during previous gameplay
                         self.settings.initialize_dynamic_settings()
 
@@ -165,6 +166,10 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            
+            #Increase level
+            self.stats.level += 1
+            self.current_score.prep_level()
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
